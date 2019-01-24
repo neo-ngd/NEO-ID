@@ -71,32 +71,32 @@ contract ClaimIssuer {
         );
 
     /**
-      * @dev A smart contract can call this function to verify the a claim
+      * @dev A smart contract can call this function to verify if a hash of a claim is valid
       * @param _hashedClaim the hash of the claim
       * @return success if the claim exists and is active
       */
-    function validateClaim(
+    function isValidHash(
         bytes32 _hashedClaim
     ) 
         public view 
         returns (bool success);
 
     /**
-      * @dev A smart contract can call this function to verify the a claim AND checks if all properties matches
+      * @dev A smart contract can call this function to verify the claim AND checks if all properties matches.
       * @param _issuer the claim issuer
       * @param _holder the holder of the claim
       * @param _scheme the referenced scheme used for the claim
       * @param _property the claim property
-      * @return success if the claim exists and is active
+      * @return returns the assigned value of the claim
       */
-    function validateClaim(
+    function validateClaimAndGetValue(
         address _issuer,
         address _holder, 
         address _scheme, 
         bytes32 _property
     )
         public view
-        returns (bool success);
+        returns (bytes32 value);
 
     // TODO: There could be more functions defined. Such as Revokate Claims etc.. 
 }

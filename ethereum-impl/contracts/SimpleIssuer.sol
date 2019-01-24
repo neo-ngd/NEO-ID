@@ -103,35 +103,35 @@ contract SimpleIssuer is ClaimIssuer {
         issuerSig = claimMap[_hashedClaim].issuerSig;
     }
 
-    function validateClaim(
+    function isValidHash(
         bytes32 _hashedClaim
     ) 
         public view 
-        returns (bool success) 
+        returns (bool success)
     {
         require(claimMap[_hashedClaim].issuer != address(0x0), "Claim not found");
         //TODO: Check for expire, revoke, etc...
         success = true;
     }
 
-    function validateClaim(
+    function validateClaimAndGetValue(
         address _issuer,
         address _holder, 
         address _scheme, 
         bytes32 _property
     )
         public view
-        returns (bool success)
+        returns (bytes32 value)
     {
         bytes32 hashedClaim = getHashedClaimByProps(_issuer, _holder, _scheme, _property);
-        require(validateClaim(hashedClaim), "Claim validation failed");
 
+        require(isValidHash(hashedClaim), "Claim not found");
         require(_issuer == claimMap[hashedClaim].issuer, "Issuer not match");
         require(_holder == claimMap[hashedClaim].holder, "Holder not match");   
         require(_scheme == claimMap[hashedClaim].scheme, "Scheme not match");   
         require(_property == claimMap[hashedClaim].property, "Property not match");   
 
-        success = true;
+        value = claimMap[hashedClaim].value;
     }
 
     function calcHash(

@@ -51,11 +51,15 @@ contract ClaimInspectorDemo {
     {
         
         require(
-            claimIssuer.validateClaim(_hashedClaim), 
-            "Simple verification failed"
+            claimIssuer.isValidHash(_hashedClaim), 
+            "Hash not valid"
         );
         
-        ( , , , bytes32 property, bytes32 value, ) = claimIssuer.getClaimByHash(_hashedClaim);
+        (address issuer, address holder, address scheme2, bytes32 property, bytes32 value, ) = claimIssuer.getClaimByHash(_hashedClaim);
+        
+        require(issuer == trustedIssuer, "Wrong issuer");
+        require(holder == msg.sender, "Wrong holder");
+        require(scheme2 == scheme, "Wrong scheme");
         require(property == "nationality", "Value not match!");
         require(value == "CHE", "Value not match!");
 
@@ -69,14 +73,7 @@ contract ClaimInspectorDemo {
         public 
         returns (bool allowed) 
     {
-
-        require(
-            claimIssuer.validateClaim(trustedIssuer, msg.sender, scheme, "birthDate"),
-            "Extended verification failed"
-        );
-
-        ( , , , bytes32 property, bytes32 value, ) = claimIssuer.getClaimByHash(_hashedClaim);
-        require(property == "birthDate", "Value not match!");
+        bytes32 value = claimIssuer.validateClaimAndGetValue(trustedIssuer, msg.sender, scheme, "birthDate");
         uint256 birthDate = uint256(value);
         require(birthDate < now - eighteenYear, "Not yet 18 years old");
 
