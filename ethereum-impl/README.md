@@ -37,3 +37,19 @@ truffle test
 - `contracts/interfaces` contains the defined interfaces for SeraphID.
 - `contracts` contains a reference implementation for demo purposes
 - `test` contains unit tests
+
+## Cryptographic functions
+
+Ethereum cryptography is based on:
+
+- Asymmetric cryptography: secp256k1
+- Hash: Keccak256 SHA-3
+
+**Private key / Public key / Address**
+Ethereum uses ECDSA for the key handling. The algorithm in use is `secp256k1`.
+
+- Private key: Are 256 Bits random data (32 Bytes)
+- Public key: Ethereum uses uncompressed public keys. And is 65 Bytes long and starts with hex 0x04...
+- Address: Are the last 20 bytes from the Keccak256 SHA-3 Hash from the public key.
+
+More details [Mastering Ethereum](https://github.com/ethereumbook/ethereumbook/blob/develop/04keys-addresses.asciidoc)
