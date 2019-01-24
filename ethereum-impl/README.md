@@ -45,7 +45,8 @@ Ethereum cryptography is based on:
 - Asymmetric cryptography: secp256k1
 - Hash: Keccak256 SHA-3
 
-**Private key / Public key / Address**
+### Private key / Public key / Address
+
 Ethereum uses ECDSA for the key handling. The algorithm in use is `secp256k1`.
 
 - Private key: Are 256 Bits random data (32 Bytes)
