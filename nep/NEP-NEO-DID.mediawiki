@@ -1,0 +1,120 @@
+<pre>
+  Title: did:neo method specification
+  Author: Kasimir Blaser, <kasimir.blaser@swisscom.com>, Luigi Riva <luigi.riva@swisscom.com>, Piotr Janus <piotr.janus@swisscom.com>
+  Status: Draft
+  Created: 2019-01-23
+</pre>
+
+== Abstract ==
+
+To introduce Self-Sovereign Identity support in the NEO blockchain and enforce compatibility
+with the raising standards we propose a DID method for NEO. The DID is a pre-requisite for the [https://github.com/neo-project/proposals/pull/42 NEP-12]. 
+
+The W3C Credentials Community Group [https://w3c-ccg.github.io/did-spec/ DIDs] standard was choosen for future interopability
+with other Decentralized Identifier provider. The following DID Method is registered on [https://w3c-ccg.github.io/did-method-registry/ DID Method Registry].
+
+== NEO-DID Method Definition ==
+
+=== Context ===
+As defined in the W3C Credentials Community Group [https://w3c-ccg.github.io/did-spec/ DIDs] standard the context is defined as
+
+<pre>
+{
+  "@context": "https://w3id.org/did/v1"
+}
+</pre>
+
+=== Subject ===
+The choosen subject is "neo" and the following format is required:
+
+<pre>
+did = "did:neo:" network ":" specific-idstring
+network = ("test" / "main")
+specific-idstring = NEO Public address (see below)
+</pre>
+
+specific-idstring will be generated using a NEO Public address = base58check(ScriptHash), where ScriptHash=RIPMD160(SHA256(publicKey))
+
+EXAMPLE:
+<pre>
+{
+  "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X"
+}
+</pre>
+
+=== Public Keys ===
+A public key section is defined in order to support encryption and cryptography operations.
+The public key is generated accordingly to the NEO cryptography available support.
+If the identity is public in the network (on-chain identity) then its smart contract public address will be also listed in the available public keys. 
+
+<pre>
+ "publicKey": [{
+    "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X#keys-1",
+    "type": "EdDsaSAPublicKeySecp256r1",
+    "controller": "did:neo:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
+    "publicKeyBase58": "H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+  },{
+    "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X#keys-2",
+    "type": "EdDsaSAPublicKeySecp256r1",
+    "controller": "did:neo:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
+    "publicKeyBase58": "J5D3ADfNNv6gmMAgNjZpfkcJCwDwnZn6x4FprfkcsADS"
+  }]
+</pre>
+
+=== Authorization ===
+Authorization section is not necessary.
+
+=== Service Endpoint === 
+Given the versatile nature of NEO Seraph ID for public, on-chain identity, endpoint to interact with the identity itself is represented by a smart contract.
+For off-chain, discrete identity, using SBIS as identity cloud manager, a specific endpoint is provided.
+
+<pre>
+  "service": [{
+    "type": "smartContractService",
+    "serviceEndpoint":"https://www.cloudservice1.org/me"
+  },{
+    "type": "cloudWallet",
+    "serviceEndpoint":"https://me.cloudservice2.com"
+  }]
+</pre>
+
+== Method Example ==
+The following example shows the extensive DID method definition proposed for a single, public, on-chain identity (e.g. Issuer).
+<pre>
+{
+  "@context": "https://w3id.org/did/v1",
+  "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
+  "publicKey": [{
+    "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X#keys-1",
+    "type": "RsaVerificationKey2018",
+    "controller": "did:neo:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
+    "publicKeyBase58": "H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+  },{
+    "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X#keys-2",
+    "type": "RsaVerificationKey2018",
+    "controller": "did:neo:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
+    "publicKeyBase58": "J5D3ADfNNv6gmMAgNjZpfkcJCwDwnZn6x4FprfkcsADS"
+  }],
+  "service": [{
+    "type": "smartContractService",
+    "serviceEndpoint":"https://www.cloudservice1.org/me"
+  },{
+    "type": "SBISService",
+    "serviceEndpoint":"https://me.cloudservice2.com"
+  }]
+}
+</pre>
+
+== NEO-DID Operations ==
+The following DID operations should be defined as requested by the DID defintion. Each public DID in the NEO network capable to issue credentials is
+
+OPTION1: represented by a single smart contract (each issuer needs to deploy its own smart contract and will be capable to interact with its DID through the smart contract itself)
+
+OPTION2: listed on a DID whitelist (a main authority, e.g. "NEO-SSI" or "NOVARTIS-SSI-NETWORK", will deploy the "whitelist smartcontract". A new DID should be then created,updated,deleted and read sending a specific transaction to the specific method. 
+
+Based on the decision taken on the design the following 4 operations would change
+
+=== Create (register) ===
+=== Read/Verify ===
+=== Update ===
+=== Delete/Revoke ===
