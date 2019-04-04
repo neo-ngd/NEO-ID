@@ -284,7 +284,7 @@ For a weighted directed graph \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\):
 \item \(\mathcal{G}\) is trust network graph
 
 
-\item \(\mathcal{V}\) is the set of vertices of the graph. Each vertex is an object (people, organization, group, assets, proposition)
+\item \(\mathcal{V}\) is the set of vertices of the graph. Each vertex represents an entity (people, organization, group, assets, proposition)
 
 
 \item \(\mathcal{E}\) is the set of edges of the graph. Each edge from vertex \(i\) to vertex \(j\) means that there is a direct trust from \(i\)
@@ -529,8 +529,51 @@ a trust confidence \(f_{\mathcal{G}}(x,y)\) from the trustor \(x\) to the truste
 (* OLD TEXT END *)
 
 
+\subsubsection{Protocol}
 
 
+
+(* REFINE THE FOLLOWING DEFS to SOME STANDARD FORMAT *)
+
+
+
+(* SOME FIELD MAY NEED TO RENAME *)
+
+message GLOBAL$\_$TRUST$\_$NETWORK $\{$\\
+\hspace*{2.ex} repeated ENTITY entities = 1;\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 2;\\
+$\}$\\
+\\
+message LOCAL$\_$TRUST$\_$PROFILE $\{$\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
+\hspace*{2.ex} optional TRUST$\_$PROCESS$\_$FUNCTION trust$\_$process$\_$function = 2;\\
+$\}$\\
+\\
+message TRUST$\_$PROOF $\{$\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
+$\}$\\
+\\
+message ENTITY $\{$\\
+\hspace*{2.ex} PUBLIC$\_$KEY id = 1;\\
+\hspace*{2.ex} ENTITY$\_$TYPE type = 2;\\
+\hspace*{2.ex} repeated DOMAIN domains = 3;\\
+\hspace*{2.ex} optional META metadata = 4;\\
+$\}$\\
+\\
+message AUTHORIZATION $\{$\\
+\hspace*{2.ex} PUBLIC$\_$KEY trustor = 1;\\
+\hspace*{2.ex} PUBLIC$\_$KEY trustee = 2;\\
+\hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
+\hspace*{2.ex} optional META metadata = 4;\\
+\hspace*{2.ex} SIGNATURE signature = 5;\\
+$\}$\\
+\\
+enum ENTITY$\_$TYPE $\{$\\
+\hspace*{2.ex} TRUSTEE = 1;\\
+\hspace*{2.ex} TRUSTOR = 2;\\
+\hspace*{2.ex} RECOMMENDER = 3;\\
+\hspace*{2.ex} GROUP = 4;\\
+$\}$
 
 
 \subsection{Game Model}
