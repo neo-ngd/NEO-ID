@@ -144,7 +144,7 @@ with the application domain.
 
 
 
- Let us first define trust with a commonly accepted definition: (* REF NEEDED *)
+Let us first define trust with a commonly accepted definition: (* REF NEEDED *)
 
 
 
@@ -183,45 +183,14 @@ What does Alice trust Bob for, how much does Alice trust Bob and under what circ
 
 (* BEGIN Transitivity of trust $\&$ REF NEEDED *)\\
 Most authentication protocols rely on the basic assumption that trust is transitive, i.e. if Alice trusts Bob, and Bob trusts Cathy, then it follows
-that Alice trusts Cathy. This, however, is an erroneous assumption. Trust is not transitive [J{\o}s96]. If Alice trusts Bob, and Bob trusts Cathy,
-it does not follow that Alice trusts Cathy. Alice's trust in Bob has no relation whatsoever to Bob's trust in Cathy. The decision on whether to trust
-or distrust a subject, or a given authentication chain is ultimately made by the entity, and cannot be automated by any protocol\\
+that Alice trusts Cathy. This, however, is an erroneous assumption. Trust is not transitive. If Alice trusts Bob, and Bob trusts Cathy, it does not
+follow that Alice trusts Cathy. Alice's trust in Bob has no relation whatsoever to Bob's trust in Cathy. The decision on whether to trust or distrust
+a subject, or a given authentication chain is ultimately made by the entity, and cannot be automated by any protocol\\
 (* END Transitivity of trust *)
 
 
 
 (* FOLLOWING DESCRIPTIONS NEED TO BE REFINED *)
-
-
-
-In this work, we have chosen to represent trust as a continuous variable over a specific range \([-1, +1]\). Here is a possible stratification of
-trust values:
-
-
-\caption{Table 1. Possible stratification of trust values} 
-
-
-\begin{tabular}
-\(\begin{array}{lc}
-\hline
- \text{Value Range} & \text{Lable} \\
-\hline
- +1 & \text{Blind Trust} \\
-\hline
- \text{[0.9, 1)} & \text{Very High Trust} \\
- \text{[0.75, 0.9)} & \text{High Trust} \\
- \text{[0.5, 0.75)} & \text{High Medium Trust} \\
- \text{[0.25, 0.5)} & \text{Low Medium Trust} \\
- \text{(0, 0.25)} & \text{Low Trust} \\
- 0 & \text{No Trust or Distrust} \\
- \text{(-0.25, 0)} & \text{Low Distrust} \\
- \text{(-0.5, -0.25]} & \text{Low Medium Distrust} \\
- \text{(-0.75, -0.5]} & \text{High Medium Distrust} \\
- \text{(-0.9, -0.75]} & \text{High Distrust} \\
- \text{(-1, -0.9]} & \text{Very High Distrust} \\
- -1 & \text{Complete Distrust} \\
-\end{array}\)
-\end{tabular}
 
 
 
@@ -277,59 +246,181 @@ trust framework, one needs to identify its desirable properties. Our framework:
 \subsubsection{Definition}
 
 
+\subsubsubsection{Trust Value}
 
-For a weighted directed graph \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\):
 
 
-\item \(\mathcal{G}\) is trust network graph
+There are many ways to quantify trust, but to simplify the problem, we choose to represent trust as a continuous variable over a specific range \([-1,
++1]\).
+
+Trust value \(a\) is a scalar to describe how much one trusts another. Trust here refers to direct trust.
+
+
+
+Here are some properties of trust value \(a\):
+
+
+\item The maximum value of 
+\item \(a\)
+\item  is 
+\item \(+1\)
+\item  which means blind trust
+
+
+\item The minium value of 
+\item \(a\)
+\item  is 
+\item \(-1\)
+\item  which means complete distrust
+
+
+\item The trust value \(0\)
+\item  is a neutral value which means no trust nor distrust.
+
+
+\item The greater the \(a\)
+\item , the more trust
+
+
+
+
+\item Thus we know the domain of \(a\)
+
+\(a\in \mathbf{a}=[-1,+1]\)
+
+
+
+Here is a possible stratification of trust values:
+
+
+\caption{Table 1. Possible stratification of trust values} 
+
+
+\begin{tabular}
+\(\begin{array}{lc}
+\hline
+ \text{Value Range} & \text{Lable} \\
+\hline
+ +1 & \text{Blind Trust} \\
+\hline
+ \text{[0.9, 1)} & \text{Very High Trust} \\
+ \text{[0.75, 0.9)} & \text{High Trust} \\
+ \text{[0.5, 0.75)} & \text{High Medium Trust} \\
+ \text{[0.25, 0.5)} & \text{Low Medium Trust} \\
+ \text{(0, 0.25)} & \text{Low Trust} \\
+ 0 & \text{No Trust or Distrust} \\
+ \text{(-0.25, 0)} & \text{Low Distrust} \\
+ \text{(-0.5, -0.25]} & \text{Low Medium Distrust} \\
+ \text{(-0.75, -0.5]} & \text{High Medium Distrust} \\
+ \text{(-0.9, -0.75]} & \text{High Distrust} \\
+ \text{(-1, -0.9]} & \text{Very High Distrust} \\
+ -1 & \text{Complete Distrust} \\
+\end{array}\)
+\end{tabular}
+
+
+\subsubsubsection{Trust Network}
+
+A trust network is a weighted directed graph \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\):
 
 
 \item \(\mathcal{V}\) is the set of vertices of the graph. Each vertex represents an entity (people, organization, group, assets, proposition)
 
 
-\item \(\mathcal{E}\) is the set of edges of the graph. Each edge from vertex \(i\) to vertex \(j\) means that there is a direct trust from \(i\)
-to \(j\)
+\item \(\mathcal{E}\) is the set of edges of the graph. Each edge from vertex \(i\) to vertex \(j\) means that there is a direct trust (or distrust)
+from \(i\) to \(j\)
 
 
-\item \(A\) is the weight adjacency matrix where \(a_{i,j}\) denotes the scalar entry in the \((i,j)\) -th position. \(a_{i,j}\in [-1,+1]\), and
-if \((i,j)\notin \mathcal{E}\), \(a_{i,j}=0\).
-
-
-
-We will propose solutions \(\mathcal{F}\) to solve a trust metric. For \(\forall f\in \mathcal{F}\), \(\forall x,y\in \mathcal{V}\), we can solve
-a trust confidence \(f_{\mathcal{G}}(x,y)\) from the trustor \(x\) to the trustee \(y\).
+\item \(A\) is the weight adjacency matrix of the graph where \(a_{i,j}\) denotes the scalar entry in the \((i,j)\) -th position which means the
+trust value from \(i\) to \(j\).
 
 
 
-(* MORE DETAILS NEEDED *)
+Here are some properties of trust network \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\) which we can inference from above:
+
+All the trust values in the weight adjacency matrix \(A\) are in the domain of \([-1,+1]\)
+
+\(a_{i,j}\in [-1,+1] \text{for} \forall i,j\in \mathcal{V}\)
+
+if \(i\) remains neutral about \(j\), the trust value is \(0\).
+
+\(a_{i,j}=0 \text{if} (i,j)\notin \mathcal{E}\)
 
 
-\subsubsection{Assumption}
+\subsubsubsection{Trust Process Function}
 
-
-\subsubsubsection{Normal Case Assumption}
-
-
-
-(* TODO *)
-
-
-
-(* DESCRIPTION NEEDED *)
-
-
-\item \(a_{i,j}\in [0,1]\)
-
-
-\item \(f_{\mathcal{G}}(x,y)\in [0,1]\)
+Trust process function is a function \(f_{\mathcal{G}}:(\mathcal{V},\mathcal{V})\to \mathbf{a}\) on the trust network. We can use \(f_{\mathcal{G}}(x,y)\)
+to solve a overall trust metric from the trustor \(x\) to the trustee \(y\).
 
 
 
-(* TODO Solution Assumption *)
+We have some assumptions about the trust process function \(f\):
+
+Any increment of trust value in the trust network will never decrease the overall trust from one to another.
+
+\(\frac{\partial f}{\partial a_{i,j}}\geqslant 0 \text{for} \forall i,j\in \mathcal{V}\)
+
+Trust will gradually decay during the process of transition
+
+\(f_{\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i}\left(x_0,x_n\right)\leq \underset{i=1}{\overset{n}{\min }}f_{\mathcal{G}_i}\left(x_{i-1},x_i\right)\)
+
+\(\mathcal{G}_i=\left\{\mathcal{V}_i,\mathcal{E}_i,A_i\right\}\)
+
+\(\mathcal{V}_i=\left\{x_{i-1},x_i\right\}\)
+
+\(\mathcal{E}_i=\left\{\left(x_{i-1},x_i\right)\right\}\cap \mathcal{E}\)
+
+\(A_i=\left(
+\begin{array}{cc}
+ a_{x_{i-1},x_{i-1}} & a_{x_{i-1},x_i} \\
+ \square  & a_{x_i,x_i} \\
+\end{array}
+\right)\)
+
+\(\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i=\left(\underset{i=1}{\overset{n}{\cup }}\mathcal{V}_i,\underset{i=1}{\overset{n}{\cup }}\mathcal{E}_i,\left(
+\begin{array}{cccccc}
+ a_{x_0,x_0} & \square  & \square  & \square  & \square  & \square  \\
+ \square  & \ddots & \square  & \square  & \square  & \square  \\
+ \square  & \square  & a_{x_{i-1},x_{i-1}} & a_{x_{i-1},x_i} & \square  & \square  \\
+ \square  & \square  & \square  & a_{x_i,x_i} & \square  & \square  \\
+ \square  & \square  & \square  & \square  & \ddots & \square  \\
+ \square  & \square  & \square  & \square  & \square  & a_{x_n,x_n} \\
+\end{array}
+\right)\right)\)
+
+More recommends are better than single recommends
+
+\(f_{\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i}(x,y)\geq \underset{i=1}{\overset{n}{\max }}f_{\mathcal{G}_i}(x,y)\)
+
+\(\mathcal{G}_i=\left\{\mathcal{V}_i,\mathcal{E}_i,A_i\right\}\)
+
+\(\mathcal{V}_i=\left\{x,y,v_i\right\},v_i\in \mathcal{V}\)
+
+\(\mathcal{E}_i=\left\{\left(x,v_i\right),\left(v_i,y\right)\right\}\cap \mathcal{E}\)
+
+\(A_i=\left(
+\begin{array}{ccc}
+ a_{x,x} & a_{x,v_i} & \square  \\
+ \square  & a_{v_i,v_i} & a_{v_i,y} \\
+ \square  & \square  & a_{y,y} \\
+\end{array}
+\right)\)
+
+\(\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i=\left(\underset{i=1}{\overset{n}{\cup }}\mathcal{V}_i,\underset{i=1}{\overset{n}{\cup }}\mathcal{E}_i,\left(
+\begin{array}{ccccccc}
+ a_{x,x} & \cdots  & a_{x,v_i} & \cdots  & a_{x,v_j} & \cdots  & \square  \\
+ \square  & \ddots & \square  & \square  & \square  & \square  & \vdots  \\
+ \square  & \square  & a_{v_i,v_i} & \square  & \square  & \square  & a_{v_i,y} \\
+ \square  & \square  & \square  & \ddots & \square  & \square  & \vdots  \\
+ \square  & \square  & \square  & \square  & a_{v_j,v_j} & \square  & a_{v_j,y} \\
+ \square  & \square  & \square  & \square  & \square  & \ddots & \vdots  \\
+ \square  & \square  & \square  & \square  & \square  & \square  & a_{y,y} \\
+\end{array}
+\right)\right)\)
 
 
 
-(* DESCRIPTION NEEDED *)
+(* TO BE REMOVED BEGIN *)
 
 
 \item \(a_{x,y}^{(1)}=a_{x,y}\)
@@ -371,6 +462,10 @@ a trust confidence \(f_{\mathcal{G}}(x,y)\) from the trustor \(x\) to the truste
 
 
 \item \(\oplus (x,y)\otimes z=\oplus (x\otimes z,y\otimes z)\)
+
+
+
+(* TO BE REMOVED END *)
 
 
 
@@ -564,8 +659,9 @@ message AUTHORIZATION $\{$\\
 \hspace*{2.ex} PUBLIC$\_$KEY trustor = 1;\\
 \hspace*{2.ex} PUBLIC$\_$KEY trustee = 2;\\
 \hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
-\hspace*{2.ex} optional META metadata = 4;\\
-\hspace*{2.ex} SIGNATURE signature = 5;\\
+\hspace*{2.ex} VALID$\_$TIME valid$\_$time = 4;\\
+\hspace*{2.ex} optional META metadata = 5;\\
+\hspace*{2.ex} SIGNATURE signature = 6;\\
 $\}$\\
 \\
 enum ENTITY$\_$TYPE $\{$\\
