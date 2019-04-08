@@ -360,9 +360,10 @@ Any increment of trust value in the trust network will never decrease the overal
 
 \(\frac{\partial f}{\partial a_{i,j}}\geqslant 0 \text{for} \forall i,j\in \mathcal{V}\)
 
-Trust will gradually decay during the process of transition
+Trust will gradually decay during the process of transition (without distrust)
 
-\(f_{\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i}\left(x_0,x_n\right)\leq \underset{i=1}{\overset{n}{\min }}f_{\mathcal{G}_i}\left(x_{i-1},x_i\right)\)
+\(f_{\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i}\left(x_0,x_n\right)\leq \underset{i=1}{\overset{n}{\min }}f_{\mathcal{G}_i}\left(x_{i-1},x_i\right)
+\text{if} a_{i,j}\in [0,+1] \text{for} \forall i,j\in \mathcal{V}\)
 
 \(\mathcal{G}_i=\left\{\mathcal{V}_i,\mathcal{E}_i,A_i\right\}\)
 
@@ -388,9 +389,10 @@ Trust will gradually decay during the process of transition
 \end{array}
 \right)\right)\)
 
-More recommends are better than single recommends
+More recommends are better than single recommends (without distrust)
 
-\(f_{\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i}(x,y)\geq \underset{i=1}{\overset{n}{\max }}f_{\mathcal{G}_i}(x,y)\)
+\(f_{\underset{i=1}{\overset{n}{\cup }}\mathcal{G}_i}(x,y)\geq \underset{i=1}{\overset{n}{\max }}f_{\mathcal{G}_i}(x,y) \text{if} a_{i,j}\in [0,+1]
+\text{for} \forall i,j\in \mathcal{V}\)
 
 \(\mathcal{G}_i=\left\{\mathcal{V}_i,\mathcal{E}_i,A_i\right\}\)
 
