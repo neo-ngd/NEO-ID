@@ -6,6 +6,9 @@
 \newcommand{\mathsym}[1]{{}}
 \newcommand{\unicode}[1]{{}}
 
+\newcounter{mathematicadefinition}
+\newcounter{mathematicaproposition}
+\newcounter{mathematicafigurecaption}
 \begin{document}
 
 \title{Design of NEO ID}
@@ -253,31 +256,32 @@ trust framework, one needs to identify its desirable properties. Our framework:
 There are many ways to quantify trust, but to simplify the problem, we choose to represent trust as a continuous variable over a specific range \([-1,
 +1]\).
 
-Trust value \(a\) is a scalar to describe how much one trusts another. Trust here refers to direct trust.
+\(\text{Definition} \arabic{mathematicadefinition}.\)Trust value \(a\) is a scalar to describe how much one trusts another. Trust here refers to
+direct trust.
 
 
 
 Here are some properties of trust value \(a\):
 
-
+\(\text{Proposition} \arabic{mathematicaproposition}.\)
 \item The maximum value of 
 \item \(a\)
 \item  is 
 \item \(+1\)
 \item  which means blind trust
 
-
+\(\text{Proposition} \arabic{mathematicaproposition}.\)
 \item The minium value of 
 \item \(a\)
 \item  is 
 \item \(-1\)
 \item  which means complete distrust
 
-
+\(\text{Proposition} \arabic{mathematicaproposition}.\)
 \item The trust value \(0\)
 \item  is a neutral value which means no trust nor distrust.
 
-
+\(\text{Proposition} \arabic{mathematicaproposition}.\)
 \item The greater the \(a\)
 \item , the more trust
 
@@ -321,46 +325,62 @@ Here is a possible stratification of trust values:
 
 \subsubsubsection{Trust Network}
 
-A trust network is a weighted directed graph \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\):
-
-
-\item \(\mathcal{V}\) is the set of vertices of the graph. Each vertex represents an entity (people, organization, group, assets, proposition)
-
-
-\item \(\mathcal{E}\) is the set of edges of the graph. Each edge from vertex \(i\) to vertex \(j\) means that there is a direct trust (or distrust)
-from \(i\) to \(j\)
-
-
-\item \(A\) is the weight adjacency matrix of the graph where \(a_{i,j}\) denotes the scalar entry in the \((i,j)\) -th position which means the
-trust value from \(i\) to \(j\).
+\(\text{Definition} \arabic{mathematicadefinition}.\)A trust network is a weighted directed graph \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\):\(\mathcal{V}\)
+is the set of vertices of the graph. Each vertex represents an entity (people, organization, group, assets, proposition); \(\mathcal{E}\) is the
+set of edges of the graph. Each edge from vertex \(i\) to vertex \(j\) means that there is a direct trust (or distrust) from \(i\) to \(j\); \(A\)
+is the weight adjacency matrix of the graph where \(a_{i,j}\) denotes the scalar entry in the \((i,j)\)-th position which means the trust value from
+\(i\) to \(j\).
 
 
 
 Here are some properties of trust network \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\) which we can inference from above:
 
-All the trust values in the weight adjacency matrix \(A\) are in the domain of \([-1,+1]\)
+\(\text{Proposition} \arabic{mathematicaproposition}.\)All the trust values in the weight adjacency matrix \(A\) are in the domain of \([-1,+1]\)
 
 \(a_{i,j}\in [-1,+1] \text{for} \forall i,j\in \mathcal{V}\)
 
-if \(i\) remains neutral about \(j\), the trust value is \(0\).
+\(\text{Proposition} \arabic{mathematicaproposition}.\)if \(i\) remains neutral about \(j\), the trust value is \(0\).
 
 \(a_{i,j}=0 \text{if} (i,j)\notin \mathcal{E}\)
 
 
 \subsubsubsection{Trust Process Function}
 
-Trust process function is a function \(f_{\mathcal{G}}:(\mathcal{V},\mathcal{V})\to \mathbf{a}\) on the trust network. We can use \(f_{\mathcal{G}}(x,y)\)
-to solve a overall trust metric from the trustor \(x\) to the trustee \(y\).
+\(\text{Definition} \arabic{mathematicadefinition}.\)Trust process function is a function \(f_{\mathcal{G}}:(\mathcal{V},\mathcal{V})\to \mathbf{a}\)
+on the trust network. We can use \(f_{\mathcal{G}}(x,y)\) to solve a overall trust metric from the trustor \(x\) to the trustee \(y\).
 
 
 
 We have some assumptions about the trust process function \(f\):
 
-Any increment of trust value in the trust network will never decrease the overall trust from one to another.
+\(\text{Proposition} \arabic{mathematicaproposition}.\)Any increment of trust value in the trust network will never decrease the overall trust from
+one to another.
 
 \(\frac{\partial f}{\partial a_{i,j}}\geqslant 0 \text{for} \forall i,j\in \mathcal{V}\)
 
-Trust will gradually decay during the process of transition
+\(\text{Proposition} \arabic{mathematicaproposition}.\)Trust will gradually decay during the process of transition.
+
+
+
+For example, we have \(f_{\mathcal{G}_1}(x,y)\) to describe the overall trust from \(x\) to \(y\) in figure 1, if we add a trust relation from \(y\)
+to \(v\), the graph will be figure 2. We know \(x\) may have more confidence to \(y\) than \(v\) because the trust value from \(x\) to \(v\) rely
+on the trust from \(x\) to \(y\).
+
+\includegraphics{NEOID_gr1.eps}
+
+
+\caption{\(\text{Figure} \arabic{mathematicafigurecaption}.\)The trust network before adding \(v\)}
+
+
+\includegraphics{NEOID_gr2.eps}
+
+
+\caption{\(\text{Figure} \arabic{mathematicafigurecaption}.\)The trust network after adding \(v\)}
+
+
+
+
+Thus we assume the following expression
 
 \(\frac{f_{\mathcal{G}^{\oplus }}(x,v)}{f_{\mathcal{G}}(x,y)}\in [-1,+1]\)
 
@@ -392,7 +412,28 @@ a_{y,v} \\
 \end{array}
 \right)\right)\)
 
-More recommends are better than single recommends
+\(\text{Proposition} \arabic{mathematicaproposition}.\)More positive recommends are better.
+
+
+
+For example, we have \(f_{\mathcal{G}_3}(x,y)\) to describe the overall trust from \(x\) to \(y\) in figure 3, we have only one proof-chain to describe
+the trust from \(x\) to \(y\). If there are more proof chains like \(x\to v\to y\) in figure 4, it would be useful.
+
+\includegraphics{NEOID_gr3.eps}
+
+
+\caption{\(\text{Figure} \arabic{mathematicafigurecaption}.\)The trust network before adding \(v\)}
+
+
+\includegraphics{NEOID_gr4.eps}
+
+
+\caption{\(\text{Figure} \arabic{mathematicafigurecaption}.\)The trust network after adding \(v\)}
+
+
+
+
+Thus we assume the following expression:
 
 \(f_{\mathcal{G}^{\otimes }}(x,y)-f_{\mathcal{G}}(x,y)\left\{
 \begin{array}{cc}
