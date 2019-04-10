@@ -349,6 +349,8 @@ f_{\mathcal{G}}^{\text{NRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\math
 
 Extended Passive Recommended Reliable Trust
 
+(* WHAT PASSIVE MEANS *)
+
 Based on Normal Recommended Reliable Trust and Extended Direct Reliable Trust. We have the following expression:
 
 \begin{equation}
@@ -376,6 +378,8 @@ f_{\mathcal{G}}^{\text{EPRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\mat
 
 Extended Initiative Recommended Reliable Trust
 
+(* WHAT Initiative MEANS *)
+
 Based on Extended Passive Recommended Reliable Trust and Extended Direct Reliable Trust. We have the following expression:
 
 \begin{equation}
@@ -397,6 +401,107 @@ f_{\mathcal{G}}^{\text{EIRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\mat
 \end{array}
 \right.
 \end{equation}
+
+Recommended Unreliable Trust
+
+Now let{'}s have a discussion about Recommended Unreliable Trust. First we have a strong assumption that trust evaluation can be built with two operations,
+passing and combining. By comparing it to the matrix multiplication, we can define a multiplication operation of trust value adjacency matrix of
+trust network \(\mathcal{G}\). \(\sum _*\) is the trust combining operation and \(\times _*\) is the trust combining operation. We will give some
+definitions of \(\sum _*\) and \(\times _*\) later.
+
+\begin{equation}
+S\times T\overset{a_{i,j}=\underset{k\in \mathcal{V}}{\sum _*}s_{i,k}\times _*t_{k,j}}{=}\left(a_{i,j}\right)_{\mathcal{V}\times \mathcal{V}}
+\end{equation}
+
+Then we have the definition of the power of the trust value adjacency matrix of trust network \(\mathcal{G}\). Here \(n\) means the trust passing
+steps.
+
+\begin{equation}
+A^n=A^{n-1}\times A
+\end{equation}
+
+We use \(\alpha _{i,j}\) to denote the entry in the \((i,j)\)-th position of \(A^n\). Thus we have the following expression to solve the overall
+trust value from \(x\) to \(y\) with most \(n\) trust passing steps.
+
+\begin{equation}
+f_{\mathcal{G},n}^{\text{RUT}}(x,y)=\alpha _{x,y}
+\end{equation}
+
+Here we have a discussion about the properties of \(\sum _*\) and \(\times _*\).
+
+\([-1,+1]\) are closed under both \(\sum _*\) and \(\times _*\).
+
+\begin{equation}
+\left\{a|a=\underset{k}{\sum _*}a_k,a_k\in [-1,+1]\right\}\subseteq [-1,+1]
+\end{equation}
+
+\begin{equation}
+\left\{a|a=a_1\times _*a_2,a_1,a_2\in [-1,+1]\right\}\subseteq [-1,+1]
+\end{equation}
+
+Any increment of operand will never decrease the result on both \(\sum _*\) and \(\times _*\).
+
+\begin{equation}
+\frac{\partial \sum _*}{\partial a}\geq 0
+\end{equation}
+
+\begin{equation}
+\frac{\partial \times _*}{\partial a}\geq 0
+\end{equation}
+
+We only discuss the \(\sum _*\) and \(\times _*\) operations on passive cases in the following. We can add some more assumptions.
+
+Result of \(\sum _*\) is bigger than any operand and result of \(\times _*\) is smaller than any operand.
+
+\[a_k\geq 0\to \underset{k}{\sum _*}a_k\geq \underset{k}{\max }\left(a_k\right)\]
+
+\[a_1,a_2\geq 0\to a_1\times _*a_2\leq \min \left(a_1,a_2\right)\]
+
+Here we give a simple example of \(\sum _*\) and \(\times _*\).
+
+\[a_1,a_2\geq 0\to a_1\times _*a_2=a_1\times a_2\]
+
+\[a_k\geq 0\to \underset{k}{\sum _*}a_k=e^{\frac{1}{\sum _k \frac{1}{\log \left(a_k\right)}}}\]
+
+Here we give a simple solution of trust evaluation function about Recommended Unreliable Trust with most trust passing step 1.
+
+\[\forall i,j\in \mathcal{V},a_{i,j}\geq 0\to f_{\mathcal{G},n}^{\text{RUT}}(x,y)=f_{\mathcal{G},1}^{\text{RUT}}(x,y)=e^{\frac{1}{\sum _{k\in \mathcal{V}}
+\frac{1}{\log \left(a_{x,k}\times a_{k,y}\right)}}}\]
+
+If we add some constraint on \(\sum _*\) and \(\times _*\) about associative property, commutative property and distributive property, we have the
+following expression:
+
+\[\underset{k=1,2}{\sum _*}a_k=\underset{k=2,1}{\sum _*}a_k\]
+
+\[\underset{i}{\sum _*}\underset{j}{\sum _*}a_{i,j}=\underset{j}{\sum _*}\underset{i}{\sum _*}a_{i,j}\]
+
+\[a_1\times _*a_2=a_2\times _*a_1\]
+
+\[\left(a_1\times _*a_2\right)\times _*a_3=a_1\times _*\left(a_2\times _*a_3\right)\]
+
+\[a\times _*\underset{k}{\sum _*}a_k=\underset{k}{\sum _*}a\times _*a_k\]
+
+\[\left(\underset{k}{\sum _*}a_k\right)\times _*a=\underset{k}{\sum _*}\left(a_k\times _*a\right)\]
+
+Here we give some simplest examples of { }\(\sum _*\) and \(\times _*\) satisfied the constraint above.
+
+\[\left\{
+\begin{array}{c}
+ \sum _*=\max  \\
+ \times _*=\min  \\
+\end{array}
+\right.\]
+
+\[\left\{
+\begin{array}{c}
+ \sum _*=\max  \\
+ \times _*=\times  \\
+\end{array}
+\right.\]
+
+Although this result looks ridiculous, it is not useless. There may be lots of better solutions of trust evaluation functions and there should be
+different trust evaluation functions under different scenarios. So we here only give some examples of trust evaluation functions. Trustor can customize
+their own trust evaluation functions in their own way.
 
 
 \subsection{Trust Model Protocol Design}
