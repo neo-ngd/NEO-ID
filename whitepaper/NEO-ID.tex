@@ -325,14 +325,72 @@ Normal Recommended Reliable Trust
 Based on Normal Direct Reliable Trust, we can assume trust can be passed from one entity to another. Thus we have the following expression:
 
 \begin{equation}
-f_{\mathcal{G}}^{\text{EDUT}}(x,y)=\left\{
-\begin{array}{cc}
- 1 & \exists \mathit{p}\in \text{Permutations}(\mathcal{V}),\left\{
+f_{\mathcal{G},\mathit{p}}^{\text{NRRT}}(x,y)\overset{\left\{
 \begin{array}{c}
  \mathit{p}_i=x \\
  \mathit{p}_j=y \\
- i<j \\
- \prod _{k=i}^{j-1} f_{\mathcal{G}}^{\text{NDRT}}\left(\mathit{p}_k,p_{k+1}\right)=1 \\
+\end{array}
+\right.}{=}\left\{
+\begin{array}{cc}
+ \prod _{k=i}^{j-1} f_{\mathcal{G}}^{\text{NDRT}}\left(\mathit{p}_k,p_{k+1}\right) & i<j \\
+ 0 & \text{else} \\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+f_{\mathcal{G}}^{\text{NRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\mathcal{V})}{=}\left\{
+\begin{array}{cc}
+ 1 & \exists \mathit{p}\in \mathcal{P},f_{\mathcal{G},\mathit{p}}^{\text{NRRT}}(x,y)=1 \\
+ 0 & \text{else} \\
+\end{array}
+\right.
+\end{equation}
+
+Extended Passive Recommended Reliable Trust
+
+Based on Normal Recommended Reliable Trust and Extended Direct Reliable Trust. We have the following expression:
+
+\begin{equation}
+f_{\mathcal{G},\mathit{p}}^{\text{ERRT}}(x,y)\overset{\left\{
+\begin{array}{c}
+ \mathit{p}_i=x \\
+ \mathit{p}_j=y \\
+\end{array}
+\right.}{=}\left\{
+\begin{array}{cc}
+ \prod _{k=i}^{j-1} f_{\mathcal{G}}^{\text{EDRT}}\left(\mathit{p}_k,p_{k+1}\right) & i<j \\
+ 0 & \text{else} \\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+f_{\mathcal{G}}^{\text{EPRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\mathcal{V})}{=}\left\{
+\begin{array}{cc}
+ 1 & \exists \mathit{p}\in \mathcal{P},f_{\mathcal{G},\mathit{p}}^{\text{ERRT}}(x,y)=1 \\
+ 0 & \text{else} \\
+\end{array}
+\right.
+\end{equation}
+
+Extended Initiative Recommended Reliable Trust
+
+Based on Extended Passive Recommended Reliable Trust and Extended Direct Reliable Trust. We have the following expression:
+
+\begin{equation}
+f_{\mathcal{G}}^{\text{EIRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\mathcal{V})}{=}\left\{
+\begin{array}{cc}
+ +1 & \left\{
+\begin{array}{c}
+ \exists \mathit{p}\in \mathcal{P},f_{\mathcal{G},\mathit{p}}^{\text{ERRT}}(x,y)=+1 \\
+ \forall \mathit{p}\in \mathcal{P},f_{\mathcal{G},\mathit{p}}^{\text{ERRT}}(x,y)\neq -1 \\
+\end{array}
+\right. \\
+ -1 & \left\{
+\begin{array}{c}
+ \exists \mathit{p}\in \mathcal{P},f_{\mathcal{G},\mathit{p}}^{\text{ERRT}}(x,y)=-1 \\
+ \forall \mathit{p}\in \mathcal{P},f_{\mathcal{G},\mathit{p}}^{\text{ERRT}}(x,y)\neq +1 \\
 \end{array}
 \right. \\
  0 & \text{else} \\
