@@ -506,6 +506,66 @@ their own trust evaluation functions in their own way.
 
 \subsection{Trust Model Protocol Design}
 
+Based on the trust model, we here propose a protocol for our trust model.
+
+TRUST$\_$NETWORK represents a global trust network and it is stored on NEO blockchain. The data structure shows below.
+
+
+\texttt{message TRUST$\_$NETWORK $\{$\\
+\hspace*{2.ex} repeated ENTITY entities = 1;\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 2;\\
+\hspace*{2.ex} optional METADATA metadata = 3;\\
+$\}$}
+
+TRUST$\_$PROFILE stores the trust preferences of the trustor. It is not necessarily to be stored on blockchain, in other words, it is a local profile.
+
+
+\texttt{message TRUST$\_$PROFILE $\{$\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
+\hspace*{2.ex} optional TRUST$\_$EVALUATION$\_$FUNCTION trust$\_$evaluation$\_$function = 2;\\
+\hspace*{2.ex} optional METADATA metadata = 3;\\
+$\}$}
+
+TRUST$\_$PROOF stores the recommendation information. It is not necessarily to be stored on blockchain, in other words, it is a local proof.
+
+
+\texttt{message TRUST$\_$PROOF $\{$\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
+\hspace*{2.ex} optional METADATA metadata = 3;\\
+$\}$}
+
+ENTITY represents an entity.
+
+
+\texttt{message ENTITY $\{$\\
+\hspace*{2.ex} ADDRESS address = 1;\\
+\hspace*{2.ex} PUBLIC$\_$KEY public$\_$key = 2;\\
+\hspace*{2.ex} ENTITY$\_$TYPE entity$\_$type = 3;\\
+\hspace*{2.ex} repeated DOMAIN domains = 4;\\
+\hspace*{2.ex} optional METADATA metadata = 5;\\
+$\}$}
+
+AUTHORIZATION represents an authorization.
+
+
+\texttt{message AUTHORIZATION $\{$\\
+\hspace*{2.ex} ADDRESS from = 1;\\
+\hspace*{2.ex} ADDRESS to = 2;\\
+\hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
+\hspace*{2.ex} VALID$\_$TIME valid$\_$time = 4;\\
+\hspace*{2.ex} optional METADATA metadata = 5;\\
+\hspace*{2.ex} SIGNATURE signature = 6;\\
+$\}$}
+
+ENTITY$\_$TYPE.
+
+
+\texttt{message ENTITY$\_$TYPE $\{$\\
+\hspace*{2.ex} TRUSTOR = 1;\\
+\hspace*{2.ex} RECOMMENDER = 2;\\
+\hspace*{2.ex} TRUSTEE = 3;\\
+$\}$}
+
 
 \section{Privacy Model}
 
