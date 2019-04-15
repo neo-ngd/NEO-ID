@@ -1,7 +1,7 @@
 %% AMS-LaTeX Created with the Wolfram Language : www.wolfram.com
 
 \documentclass{article}
-\usepackage{amsmath, amssymb, graphics, setspace}
+\usepackage{amsmath, amssymb, graphics, setspace, indentfirst}
 
 \newcommand{\mathsym}[1]{{}}
 \newcommand{\unicode}[1]{{}}
@@ -160,10 +160,10 @@ A trust network is a weighted directed graph \(\mathcal{G}=(\mathcal{V},\mathcal
 \(\mathcal{V}\) is the set of vertices of the graph. Each vertex represents an entity (people, organization, group, assets, proposition).
 
 \(\mathcal{E}\) is the set of edges of the graph. Each edge from vertex \(i\in \mathcal{V}\) to vertex \(j\in \mathcal{V}\) means that there is a
-direct trust (or distrust) from \(i\) to \(j\).
+trust (or distrust) relation from \(i\) to \(j\).
 
 \(A\) is the weight adjacency matrix of the graph where \(a_{i,j}\) denotes the scalar entry in the \((i,j)\)-th position which means the trust value
-from \(i\) to \(j\).
+from \(i\) to \(j\). Specially we assume \(a_{i,j}=+1\) if \(i=j\).
 
 Here are some properties of trust network \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\) which we can inference from above:
 
@@ -181,22 +181,88 @@ If \(i\) remains neutral about \(j\), the trust value is \(0\).
 
 Here we define some operations on trust networks:
 
+add an entity to the trust network
+
 \begin{equation}
-\mathcal{E}_1\cap \mathcal{E}_2=\phi \overset{\left\{
+\mathcal{G}+v\overset{\left\{
 \begin{array}{c}
- \mathcal{G}_1=\left(\mathcal{V}_1,\mathcal{E}_1,S\right) \\
- \mathcal{G}_2=\left(\mathcal{V}_2,\mathcal{E}_2,T\right) \\
- \mathcal{V}_*=\mathcal{V}_1\cup \mathcal{V}_2 \\
- \mathcal{E}_*=\mathcal{E}_1\cup \mathcal{E}_2 \\
- a_{i,j}=\left\{
+ \mathcal{V}_*=\mathcal{V}\cup \{v\} \\
+ \mathcal{E}_*=\mathcal{E} \\
+ \tau _{i,j}=\left\{
 \begin{array}{cc}
- s_{i,j} & (i,j)\in \mathcal{E}_1 \\
- t_{i,j} & (i,j)\in \mathcal{E}_2 \\
- 0 & (i,j)\notin \mathcal{E}_* \\
+ a_{i,j} & i,j\in \mathcal{V} \\
+ 1 & i=j \\
+ 0 & \text{else} \\
 \end{array}
 \right. \\
 \end{array}
-\right.}{\to }\mathcal{G}_1+\mathcal{G}_2=\left(\mathcal{V}_*,\mathcal{E}_*,\left(a_{i,j}\right)_{\mathcal{V}_*\times \mathcal{V}_*}\right)
+\right.}{=}\left(\mathcal{V}_*,\mathcal{E}_*,\left(\tau _{i,j}\right)_{\mathcal{V}_*\times \mathcal{V}_*}\right)
+\end{equation}
+
+remove an entity to the trust network
+
+\begin{equation}
+\mathcal{G}-v\overset{\left\{
+\begin{array}{c}
+ \mathcal{V}_*=\mathcal{V}\backslash \{v\} \\
+ \mathcal{E}_*=\{(i,j)|i\neq v,j\neq v,(i,j)\in \mathcal{E}\} \\
+ \tau _{i,j}=a_{i,j} \\
+\end{array}
+\right.}{=}\left(\mathcal{V}_*,\mathcal{E}_*,\left(\tau _{i,j}\right)_{\mathcal{V}_*\times \mathcal{V}_*}\right)
+\end{equation}
+
+add a trust relation from \(x\) to \(y\) with trusts value \(a\)
+
+\begin{equation}
+\mathcal{G}+((x,y),a)\overset{\left\{
+\begin{array}{c}
+ \mathcal{V}_*=\mathcal{V} \\
+ \mathcal{E}_*=\mathcal{E}\cup \{(x,y)\} \\
+ \tau _{i,j}=\left\{
+\begin{array}{cc}
+ a & (i,j)=(x,y) \\
+ a_{i,j} & \text{else} \\
+\end{array}
+\right. \\
+\end{array}
+\right.}{=}\left(\mathcal{V}_*,\mathcal{E}_*,\left(\tau _{i,j}\right)_{\mathcal{V}_*\times \mathcal{V}_*}\right)
+\end{equation}
+
+remove a trust relation from \(x\) to \(y\)
+
+\begin{equation}
+\mathcal{G}-(x,y)\overset{\left\{
+\begin{array}{c}
+ \mathcal{V}_*=\mathcal{V} \\
+ \mathcal{E}_*=\mathcal{E}\backslash \{(x,y)\} \\
+ \tau _{i,j}=\left\{
+\begin{array}{cc}
+ 0 & (i,j)=(x,y) \\
+ a_{i,j} & \text{else} \\
+\end{array}
+\right. \\
+\end{array}
+\right.}{=}\left(\mathcal{V}_*,\mathcal{E}_*,\left(\tau _{i,j}\right)_{\mathcal{V}_*\times \mathcal{V}_*}\right)
+\end{equation}
+
+merge an trust network on an old trust network
+
+\begin{equation}
+\mathcal{G}+\mathcal{G}_0\overset{\left\{
+\begin{array}{c}
+ \mathcal{G}_0=\left(\mathcal{V}_0,\mathcal{E}_0,K\right) \\
+ \mathcal{V}_*=\mathcal{V}\cup \mathcal{V}_0 \\
+ \mathcal{E}_*=\mathcal{E}\cup \mathcal{E}_0 \\
+ \tau _{i,j}=\left\{
+\begin{array}{cc}
+ k_{i,j} & (i,j)\in \mathcal{E}_0 \\
+ a_{i,j} & (i,j)\in \mathcal{E}\backslash \mathcal{E}_0 \\
+ 1 & i=j \\
+ a_{i,j} & \text{else} \\
+\end{array}
+\right. \\
+\end{array}
+\right.}{=}\left(\mathcal{V}_*,\mathcal{E}_*,\left(\tau _{i,j}\right)_{\mathcal{V}_*\times \mathcal{V}_*}\right)
 \end{equation}
 
 
@@ -511,7 +577,7 @@ Based on the trust model, we here propose a protocol for our trust model.
 TRUST$\_$NETWORK represents a global trust network and it is stored on NEO blockchain. The data structure shows below.
 
 
-\texttt{message TRUST$\_$NETWORK $\{$\\
+\noindent \texttt{message TRUST$\_$NETWORK $\{$\\
 \hspace*{2.ex} repeated ENTITY entities = 1;\\
 \hspace*{2.ex} repeated AUTHORIZATION authorizations = 2;\\
 \hspace*{2.ex} optional METADATA metadata = 3;\\
@@ -520,7 +586,7 @@ $\}$}
 TRUST$\_$PROFILE stores the trust preferences of the trustor. It is not necessarily to be stored on blockchain, in other words, it is a local profile.
 
 
-\texttt{message TRUST$\_$PROFILE $\{$\\
+\noindent \texttt{message TRUST$\_$PROFILE $\{$\\
 \hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
 \hspace*{2.ex} optional TRUST$\_$EVALUATION$\_$FUNCTION trust$\_$evaluation$\_$function = 2;\\
 \hspace*{2.ex} optional METADATA metadata = 3;\\
@@ -529,7 +595,7 @@ $\}$}
 TRUST$\_$PROOF stores the recommendation information. It is not necessarily to be stored on blockchain, in other words, it is a local proof.
 
 
-\texttt{message TRUST$\_$PROOF $\{$\\
+\noindent \texttt{message TRUST$\_$PROOF $\{$\\
 \hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
 \hspace*{2.ex} optional METADATA metadata = 3;\\
 $\}$}
@@ -537,7 +603,7 @@ $\}$}
 ENTITY represents an entity.
 
 
-\texttt{message ENTITY $\{$\\
+\noindent \texttt{message ENTITY $\{$\\
 \hspace*{2.ex} ADDRESS address = 1;\\
 \hspace*{2.ex} PUBLIC$\_$KEY public$\_$key = 2;\\
 \hspace*{2.ex} ENTITY$\_$TYPE entity$\_$type = 3;\\
@@ -548,7 +614,7 @@ $\}$}
 AUTHORIZATION represents an authorization.
 
 
-\texttt{message AUTHORIZATION $\{$\\
+\noindent \texttt{message AUTHORIZATION $\{$\\
 \hspace*{2.ex} ADDRESS from = 1;\\
 \hspace*{2.ex} ADDRESS to = 2;\\
 \hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
@@ -560,19 +626,80 @@ $\}$}
 ENTITY$\_$TYPE.
 
 
-\texttt{message ENTITY$\_$TYPE $\{$\\
+\noindent \texttt{message ENTITY$\_$TYPE $\{$\\
 \hspace*{2.ex} TRUSTOR = 1;\\
 \hspace*{2.ex} RECOMMENDER = 2;\\
 \hspace*{2.ex} TRUSTEE = 3;\\
 $\}$}
 
 
-\section{Privacy Model}
-
-(* TODO *)
-
-
 \section{Game Model}
+
+We discussed the subjectiveness property and context-dependence property of our memoryless trust model. Then we will discuss the dynamism property.
+
+The trust model is time-varying. We use \(\mathcal{G}^{(t)}\) to denote the trust network at time \(t\).
+
+The backbone trust network is stored at the NEO main net as a state machine. We can use the operations on trust networks defined above to transform
+it from \(\mathcal{G}^{(t)}\) to \(\mathcal{G}^{(t+1)}\) which means: anyone can join or leave the trust network; anyone can add or remove the trust
+relation and update the trust value from himself to others.
+
+There are three roles in the trust system: trustor, recommender, and trustee.
+
+Here we discuss how the NEO-ID framework runs. When a trustor wants to verify the authenticity of the trustee, he has two options: passive mode and
+initiative mode, of course he can also use both modes together.
+
+Passive mode
+
+the trustee make a request to the trustor; the trustor shows his trust profile to the trustee; the trustee gets trust proof from convenient recommenders;
+the trustee submits the trust proof to the trustor; the trustor use his trust evaluation function to evaluate the overall trust to the trustee and
+then make a decision.
+
+Initiative mode
+
+the trustee make a request to the trustor; the trust broadcasts the requests to some recommenders to verify the authenticity of the trustee; the
+recommenders verify the authenticity of the trustee and submit the trust proof or broadcast the request to some other recommenders he trust or do
+nothing; the trustor collects the trust proofs and make a decision.
+
+Here we discuss the payoffs of the roles. (* DESCRIPTION NEEDED *)
+
+\begin{equation}
+\text{payoff}_{\text{TRUSTOR}}=\sum \left\{
+\begin{array}{c}
+ \text{payoff}_{\text{TRUSTOR},\text{TOPIC}} \\
+ -\sum _{i\in \text{Recommenders}} \text{cost}_{\text{TRUSTOR},i} \\
+ -\text{cost}_{\text{TRUSTOR},\text{SYSTEM}} \\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\text{payoff}_{\text{RECOMMENDER}}=\sum \left\{
+\begin{array}{c}
+ \text{cost}_{\text{TRUSTOR},\text{RECOMMENDER}} \\
+ \text{cost}_{\text{TRUSTEE},\text{RECOMMENDER}} \\
+ -\text{cost}_{\text{RECOMMENDER},\text{SYSTEM}} \\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\text{payoff}_{\text{TRUSTEE}}=\sum \left\{
+\begin{array}{c}
+ \text{payoff}_{\text{TRUSTEE},\text{TOPIC}} \\
+ -\sum _{i\in \text{Recommenders}} \text{cost}_{\text{TRUSTEE},i} \\
+ -\text{cost}_{\text{TRUSTEE},\text{SYSTEM}} \\
+\end{array}
+\right.
+\end{equation}
+
+(* REPUTATION is HERE *)
+
+\begin{equation}
+f_{\mathcal{G}}^{\text{EDUT}}(x,y)=\mathcal{G}
+\end{equation}
+
+
+\section{Privacy Model}
 
 (* TODO *)
 
@@ -585,5 +712,7 @@ $\}$}
 \section{Conclusion}
 
 (* TODO *)
+
+
 
 \end{document}
