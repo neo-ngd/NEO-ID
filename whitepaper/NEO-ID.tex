@@ -292,7 +292,13 @@ x,y\in \mathcal{V},v\notin \mathcal{V}\overset{\mathcal{G}_*=\left(\{x,v\},\{(v,
 [-1.+1]
 \end{equation}
 
-(* EXAMPLE NEEDED *)
+(* DESCRIPTION NEEDED *)
+
+
+
+\includegraphics{export_gr1.eps}
+
+
 
 More positive recommends never decrease the overall trust. More negative recommends never increase the overall trust.
 
@@ -306,7 +312,11 @@ x,y\in \mathcal{V},v\notin \mathcal{V}\overset{
 }{\to }f_{\mathcal{G}_*}(x,y)\left(f_{\mathcal{G}+\mathcal{G}_*}(x,y)-f_{\mathcal{G}}(x,y)\right)\geq 0
 \end{equation}
 
-(* EXAMPLE NEEDED *)
+(* DESCRIPTION NEEDED *)
+
+
+
+\includegraphics{export_gr2.eps}
 
 
 \subsection{Trust Evaluation Function Discussion}
@@ -570,69 +580,6 @@ different trust evaluation functions under different scenarios. So we here only 
 their own trust evaluation functions in their own way.
 
 
-\subsection{Trust Model Protocol Design}
-
-Based on the trust model, we here propose a protocol for our trust model.
-
-TRUST$\_$NETWORK represents a global trust network and it is stored on NEO blockchain. The data structure shows below.
-
-
-\noindent \texttt{message TRUST$\_$NETWORK $\{$\\
-\hspace*{2.ex} repeated ENTITY entities = 1;\\
-\hspace*{2.ex} repeated AUTHORIZATION authorizations = 2;\\
-\hspace*{2.ex} optional METADATA metadata = 3;\\
-$\}$}
-
-TRUST$\_$PROFILE stores the trust preferences of the trustor. It is not necessarily to be stored on blockchain, in other words, it is a local profile.
-
-
-\noindent \texttt{message TRUST$\_$PROFILE $\{$\\
-\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
-\hspace*{2.ex} optional TRUST$\_$EVALUATION$\_$FUNCTION trust$\_$evaluation$\_$function = 2;\\
-\hspace*{2.ex} optional METADATA metadata = 3;\\
-$\}$}
-
-TRUST$\_$PROOF stores the recommendation information. It is not necessarily to be stored on blockchain, in other words, it is a local proof.
-
-
-\noindent \texttt{message TRUST$\_$PROOF $\{$\\
-\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
-\hspace*{2.ex} optional METADATA metadata = 3;\\
-$\}$}
-
-ENTITY represents an entity.
-
-
-\noindent \texttt{message ENTITY $\{$\\
-\hspace*{2.ex} ADDRESS address = 1;\\
-\hspace*{2.ex} PUBLIC$\_$KEY public$\_$key = 2;\\
-\hspace*{2.ex} ENTITY$\_$TYPE entity$\_$type = 3;\\
-\hspace*{2.ex} repeated DOMAIN domains = 4;\\
-\hspace*{2.ex} optional METADATA metadata = 5;\\
-$\}$}
-
-AUTHORIZATION represents an authorization.
-
-
-\noindent \texttt{message AUTHORIZATION $\{$\\
-\hspace*{2.ex} ADDRESS from = 1;\\
-\hspace*{2.ex} ADDRESS to = 2;\\
-\hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
-\hspace*{2.ex} VALID$\_$TIME valid$\_$time = 4;\\
-\hspace*{2.ex} optional METADATA metadata = 5;\\
-\hspace*{2.ex} SIGNATURE signature = 6;\\
-$\}$}
-
-ENTITY$\_$TYPE.
-
-
-\noindent \texttt{message ENTITY$\_$TYPE $\{$\\
-\hspace*{2.ex} TRUSTOR = 1;\\
-\hspace*{2.ex} RECOMMENDER = 2;\\
-\hspace*{2.ex} TRUSTEE = 3;\\
-$\}$}
-
-
 \section{Game Model}
 
 We discussed the subjectiveness property and context-dependence property of our memoryless trust model. Then we will discuss the dynamism property.
@@ -692,16 +639,86 @@ Here we discuss the payoffs of the roles. (* DESCRIPTION NEEDED *)
 \right.
 \end{equation}
 
+In general, \(\text{cost}_{\text{TRUSTOR},\text{RECOMMENDER}}\) and \(\text{cost}_{\text{TRUSTEE},\text{RECOMMENDER}}\) will increase as the trust
+value increases.
+
+(* POSITIVE EXAMPLES $\&$ NEGITIVE EXAMPLES *)
+
 (* REPUTATION is HERE *)
 
-\begin{equation}
-f_{\mathcal{G}}^{\text{EDUT}}(x,y)=\mathcal{G}
-\end{equation}
+(* Additional management models *)
 
 
 \section{Privacy Model}
 
-(* TODO *)
+(* What info is on blockchain *)
+
+(* privacy level *)
+
+(* Who can read the info *)
+
+(* privacy and permission *)
+
+
+\section{Protocol Design}
+
+TRUST$\_$NETWORK represents a global trust network and it is stored on NEO blockchain. The data structure shows below.
+
+
+\noindent \texttt{message TRUST$\_$NETWORK $\{$\\
+\hspace*{2.ex} repeated ENTITY entities = 1;\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 2;\\
+\hspace*{2.ex} optional METADATA metadata = 3;\\
+$\}$}
+
+TRUST$\_$PROFILE stores the trust preferences of the trustor. It is not necessarily to be stored on blockchain, in other words, it is a local profile.
+
+
+\noindent \texttt{message TRUST$\_$PROFILE $\{$\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
+\hspace*{2.ex} optional TRUST$\_$EVALUATION$\_$FUNCTION trust$\_$evaluation$\_$function = 2;\\
+\hspace*{2.ex} optional METADATA metadata = 3;\\
+$\}$}
+
+TRUST$\_$PROOF stores the recommendation information. It is not necessarily to be stored on blockchain, in other words, it is a local proof.
+
+
+\noindent \texttt{message TRUST$\_$PROOF $\{$\\
+\hspace*{2.ex} repeated AUTHORIZATION authorizations = 1;\\
+\hspace*{2.ex} optional METADATA metadata = 3;\\
+$\}$}
+
+ENTITY represents an entity.
+
+
+\noindent \texttt{message ENTITY $\{$\\
+\hspace*{2.ex} ADDRESS address = 1;\\
+\hspace*{2.ex} PUBLIC$\_$KEY public$\_$key = 2;\\
+\hspace*{2.ex} ENTITY$\_$TYPE entity$\_$type = 3;\\
+\hspace*{2.ex} repeated DOMAIN domains = 4;\\
+\hspace*{2.ex} optional METADATA metadata = 5;\\
+$\}$}
+
+AUTHORIZATION represents an authorization.
+
+
+\noindent \texttt{message AUTHORIZATION $\{$\\
+\hspace*{2.ex} ADDRESS from = 1;\\
+\hspace*{2.ex} ADDRESS to = 2;\\
+\hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
+\hspace*{2.ex} VALID$\_$TIME valid$\_$time = 4;\\
+\hspace*{2.ex} optional METADATA metadata = 5;\\
+\hspace*{2.ex} SIGNATURE signature = 6;\\
+$\}$}
+
+ENTITY$\_$TYPE.
+
+
+\noindent \texttt{message ENTITY$\_$TYPE $\{$\\
+\hspace*{2.ex} TRUSTOR = 1;\\
+\hspace*{2.ex} RECOMMENDER = 2;\\
+\hspace*{2.ex} TRUSTEE = 3;\\
+$\}$}
 
 
 \section{Analysis}
