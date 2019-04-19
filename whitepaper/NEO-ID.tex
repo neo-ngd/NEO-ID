@@ -16,18 +16,46 @@
 
 \section{Introduction}
 
-Each time we carry out vital communication in any distributed computer system such as the Internet, we face an inherent risk. This risk arises because
-we can never be completely certain about the trustworthiness of entities that mediate our online interactions. (* REF NEEDED *) (* EXAMPLE NEEDED:
-CHATING ONLINE, HTTPS AND OTHER SCENARIOS*)\\
-To minimize this risk, users must be given the chance to check the ID with each other on the network. (* DETAILS NEEDED *)\\
+With the rapid development of technology, the popularity of the Internet and Smart devices are increasing. So each time we carry out vital communication
+in any distributed computer system, we face an inherent risk. This risk arises because we can never be completely certain about the trustworthiness
+of entities that mediate our online interactions.
+
+Some criminals falsify their identity to defraud loans ; also impersonate someone to commit fraud and other crimes by false Facebook account. To
+eliminate or reduce this phenomenon, research on effective acquisition and credibility of network information can be obtained from the source of
+information, that is, from the perspective of source (transporter), to see if the information provided by the sender (person or organization) is
+authentic.
+
+To minimize this risk, users must be given the chance to check the ID with each other on the network.
+
+So there is one way to minimize the risk that users must be given the chance to check the digital identity with each other on the network. Digital
+identity means condensing real identity information into a digital code. It{'}s a public key that can be queried and identified through the network,
+related devices, etc. The development phase of digital identity has gone through four phases: centralized identity, federated identity, user-centric
+identity, and self-sovereign identity. The identifier of the era of centralized identity is the individual{'}s email account, and the back of that
+represents a real individual. Federated identity can be compared to Facebook, Twitter and Instagram cross-platform login. User-centric identity and
+self-sovereign identity are closely related and inseparable.
+
+Self-sovereign identity is built on the blockchain, which combines the decentralization, distributed system, consensus protocol, hash encryption
+and other characteristics of the blockchain. So it is on the level of autonomy, security and controllability.
+
+But digital identity is difficult to verify legitimacy, and there is no standard form. With the rise of digital identity technology, its security
+and privacy have also increased.
+
 Well known techniques to ensure that something is authenticated have been developed and strengthened, and these techniques include cryptographic
 algorithms for secrecy and digital signatures, authentication protocols for proving authenticity, and access control methods for managing authorization.
-(* REF NEEDED *) However, these techniques do not say much about the wider notion of an entity{'}s ID. For example, cryptographic algorithms cannot
-say if a piece of digitally signed code has been authored by competent programmers and a signed public-key certificate does not tell you if the owner
-is an industrial spy. (* REF NEEDED *)\\
-Acting on behalf of a human being, any online identity is an extension of a person, and therefore must be given the same capability as humans to
-manage and reason about trust. In the following of this paper, we will explain why traditional network security mechanisms and ID management solutions
-are incomplete, and provide a general ID management protocol.
+However, these techniques do not say much about the wider notion of an entity{'}s ID. For example, cryptographic algorithms cannot say if a piece
+of digitally signed code has been authored by competent programmers and a signed public-key certificate does not tell you if the owner is an industrial
+spy.
+
+The PKI technique in verifying the issuer{'}s digital signature is cumbersome, expensive, and centralized. If the CA fails, the system crashes; the
+user cannot confirm the legitimacy and security of the CA. Moreover the hacker attack caused the private key to be stolen and the information leaked.
+
+In terms of privacy, Europe{'}s most stringent privacy regulation - GDPR required the protection of personal privacy data and stipulates that the
+data subject{'}s right to be forgotten. Both blockchain technology and GDPR are based on the protection of user personal data. Whether the combination
+of the two is on consortium blockchain or public blockchain is something we need to consider.
+
+Acting on behalf of a human being, any digital identity is an extension of a person, and therefore must be given the same capability as humans to
+manage and reason about trust. In the following of this paper, we will explain why traditional network security mechanisms and digital identity management
+solutions are incomplete, and provide a general digital identity management protocol.
 
 
 \section{Definition}
@@ -452,9 +480,9 @@ f_{\mathcal{G}}^{\text{EPRRT}}(x,y)\overset{\mathcal{P}=\text{Permutations}(\mat
 \right.
 \end{equation}
 
-Extended Initiative Recommended Reliable Trust
+Extended Active Recommended Reliable Trust
 
-(* WHAT Initiative MEANS *)
+(* WHAT Active MEANS *)
 
 Based on Extended Passive Recommended Reliable Trust and Extended Direct Reliable Trust. We have the following expression:
 
@@ -601,7 +629,7 @@ the trustee make a request to the trustor; the trustor shows his trust profile t
 the trustee submits the trust proof to the trustor; the trustor use his trust evaluation function to evaluate the overall trust to the trustee and
 then make a decision.
 
-Initiative mode
+Active mode
 
 the trustee make a request to the trustor; the trust broadcasts the requests to some recommenders to verify the authenticity of the trustee; the
 recommenders verify the authenticity of the trustee and submit the trust proof or broadcast the request to some other recommenders he trust or do
@@ -644,14 +672,39 @@ value increases.
 
 (* POSITIVE EXAMPLES $\&$ NEGITIVE EXAMPLES *)
 
+
+
+\includegraphics{export_gr3.eps}
+
+
+
+\includegraphics{export_gr4.eps}
+
+
+
+\includegraphics{export_gr5.eps}
+
 (* REPUTATION is HERE *)
+
+(* RELATION WITH CONSENSUS *)
 
 (* Additional management models *)
 
 
 \section{Privacy Model}
 
-(* What info is on blockchain *)
+Here we discuss about what information is on the global NEO ID network. From above, we know the online data is a state machine of trust network \(\mathcal{G}=(\mathcal{V},\mathcal{E},A)\).
+We know that \(\mathcal{E}\) is pairs of entities and \(A\) is a matrix of trust value. So the only problem is what data an entity contains.
+
+address
+
+public key
+
+entity type
+
+valid time
+
+proposals
 
 (* privacy level *)
 
@@ -695,8 +748,9 @@ ENTITY represents an entity.
 \hspace*{2.ex} ADDRESS address = 1;\\
 \hspace*{2.ex} PUBLIC$\_$KEY public$\_$key = 2;\\
 \hspace*{2.ex} ENTITY$\_$TYPE entity$\_$type = 3;\\
-\hspace*{2.ex} repeated DOMAIN domains = 4;\\
-\hspace*{2.ex} optional METADATA metadata = 5;\\
+\hspace*{2.ex} VALID$\_$TIME valid$\_$time = 4;\\
+\hspace*{2.ex} repeated PROPOSAL proposals = 5;\\
+\hspace*{2.ex} optional METADATA metadata = 6;\\
 $\}$}
 
 AUTHORIZATION represents an authorization.
@@ -706,7 +760,6 @@ AUTHORIZATION represents an authorization.
 \hspace*{2.ex} ADDRESS from = 1;\\
 \hspace*{2.ex} ADDRESS to = 2;\\
 \hspace*{2.ex} TRUST$\_$VALUE trust$\_$value = 3;\\
-\hspace*{2.ex} VALID$\_$TIME valid$\_$time = 4;\\
 \hspace*{2.ex} optional METADATA metadata = 5;\\
 \hspace*{2.ex} SIGNATURE signature = 6;\\
 $\}$}
