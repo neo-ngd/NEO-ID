@@ -1,53 +1,54 @@
-<pre>
-  Title: did:neo method specification
-  Author: Kasimir Blaser, <kasimir.blaser@swisscom.com>, Luigi Riva <luigi.riva@swisscom.com>, Piotr Janus <piotr.janus@swisscom.com>
-  Status: Draft
-  Created: 2019-01-23
-</pre>
+<p align="center">
+<img src="https://www.seraphid.io/assets/img/logo-dark.png" width="450px"/>
+</p>
 
-== Abstract ==
+<h1></h1>
+
+<p align="center">Seraph ID DID Definition.</p>
+
+# Abstract
 
 To introduce Self-Sovereign Identity support in the NEO blockchain and enforce compatibility
-with the raising standards we propose a DID method for NEO. The DID is a pre-requisite for the [https://github.com/neo-project/proposals/pull/42 NEP-12]. 
+with the raising standards we propose a DID method for NEO. The DID is a pre-requisite for the [Seraph ID](https://seraphid.io). 
 
-The W3C Credentials Community Group [https://w3c-ccg.github.io/did-spec/ DIDs] standard was choosen for future interopability
-with other Decentralized Identifier provider. The following DID Method is registered on [https://w3c-ccg.github.io/did-method-registry/ DID Method Registry].
+The W3C Credentials Community Group [DIDs](https://w3c-ccg.github.io/did-spec/) standard was choosen for future interopability
+with other Decentralized Identifier provider. The following DID Method will be registered on [DID Method Registry](https://w3c-ccg.github.io/did-method-registry/).
 
-== NEO-DID Method Definition ==
+## NEO-DID Method Definition
 
-=== Context ===
-As defined in the W3C Credentials Community Group [https://w3c-ccg.github.io/did-spec/ DIDs] standard the context is defined as
+### Context
+As defined in the W3C Credentials Community Group [DIDs](https://w3c-ccg.github.io/did-spec/) standard the context is defined as
 
-<pre>
+```json
 {
   "@context": "https://w3id.org/did/v1"
 }
-</pre>
+```
 
-=== Subject ===
+### Subject
 The choosen subject is "neo" and the following format is required:
 
-<pre>
+```json
 did = "did:neo:" network ":" specific-idstring
 network = ("test" / "main")
 specific-idstring = NEO Public address (see below)
-</pre>
+```
 
-specific-idstring will be generated using a NEO Public address = base58check(ScriptHash), where ScriptHash=RIPMD160(SHA256(publicKey))
+`specific-idstring` will be generated using a NEO Public address = `base58check(ScriptHash)`, where `ScriptHash = RIPMD160(SHA256(publicKey))`
 
-EXAMPLE:
+```json
 <pre>
 {
   "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X"
 }
-</pre>
+```
 
-=== Public Keys ===
+### Public Keys
 A public key section is defined in order to support encryption and cryptography operations.
 The public key is generated accordingly to the NEO cryptography available support.
 If the identity is public in the network (on-chain identity) then its smart contract public address will be also listed in the available public keys. 
 
-<pre>
+```json
  "publicKey": [{
     "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X#keys-1",
     "type": "EdDsaSAPublicKeySecp256r1",
@@ -59,16 +60,15 @@ If the identity is public in the network (on-chain identity) then its smart cont
     "controller": "did:neo:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
     "publicKeyBase58": "J5D3ADfNNv6gmMAgNjZpfkcJCwDwnZn6x4FprfkcsADS"
   }]
-</pre>
+```
 
-=== Authorization ===
+### Authorization
 Authorization section is not necessary.
 
-=== Service Endpoint === 
-Given the versatile nature of NEO Seraph ID for public, on-chain identity, endpoint to interact with the identity itself is represented by a smart contract.
-For off-chain, discrete identity, using SBIS as identity cloud manager, a specific endpoint is provided.
+### Service Endpoint
+Given the versatile nature of NEO Seraph ID for public, on-chain identity, endpoint to interact with the identity itself is represented by a smart contract. For off-chain, discrete identity, using SBIS as identity cloud manager, a specific endpoint is provided.
 
-<pre>
+```json
   "service": [{
     "type": "smartContractService",
     "serviceEndpoint":"https://www.cloudservice1.org/me"
@@ -76,11 +76,11 @@ For off-chain, discrete identity, using SBIS as identity cloud manager, a specif
     "type": "cloudWallet",
     "serviceEndpoint":"https://me.cloudservice2.com"
   }]
-</pre>
+```
 
-== Method Example ==
+## Method Example
 The following example shows the extensive DID method definition proposed for a single, public, on-chain identity (e.g. Issuer).
-<pre>
+```json
 {
   "@context": "https://w3id.org/did/v1",
   "id": "did:neo:main:AefrasH3wVfReDogQMx2LHq9o6XEAVTv8X",
@@ -103,18 +103,27 @@ The following example shows the extensive DID method definition proposed for a s
     "serviceEndpoint":"https://me.cloudservice2.com"
   }]
 }
-</pre>
+```
 
-== NEO-DID Operations ==
-The following DID operations should be defined as requested by the DID defintion. Each public DID in the NEO network capable to issue credentials is
+## NEO-DID Operations
+The following DID operations should be defined as requested by the DID defintion. Each public DID in the NEO network capable to issue credentials is either:
 
-OPTION1: represented by a single smart contract (each issuer needs to deploy its own smart contract and will be capable to interact with its DID through the smart contract itself)
+- represented by a single smart contract (each issuer needs to deploy its own smart contract and will be capable to interact with its DID through the smart contract itself)
 
-OPTION2: listed on a DID whitelist (a main authority, e.g. "NEO-SSI" or "NOVARTIS-SSI-NETWORK", will deploy the "whitelist smartcontract". A new DID should be then created,updated,deleted and read sending a specific transaction to the specific method. 
+or
+
+- listed on a DID whitelist (a main authority, e.g. "NEO-SSI", will deploy the "whitelist smartcontract". A new DID should be then created, updated, deleted and read sending a specific transaction to the specific method. 
 
 Based on the decision taken on the design the following 4 operations would change
 
-=== Create (register) ===
-=== Read/Verify ===
-=== Update ===
-=== Delete/Revoke ===
+### Create (register)
+### Read/Verify
+### Update
+### Delete/Revoke
+
+# References
+- Seraph ID official page: https://seraphid.io
+- Seraph ID demo application on [GitHub](https://github.com/swisscom-blockchain/seraph-id-demo)
+- Seraph ID SDK on [GitHub](https://github.com/swisscom-blockchain/seraph-id-sdk)
+- Seraph ID smart contract templates and examples on [GitHub](https://github.com/swisscom-blockchain/seraph-id-smart-contracts)
+
